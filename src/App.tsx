@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Axios from "axios";
+import Pokemon from "./Pokemon";
+import PokemonCard from "./components/PokemonCard";
 
 function App() {
-  interface Pokemon {
-    name: string;
-    Id: number;
-    weight: number;
-    height: number;
-    types: string[];
-  }
-
   const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>(null);
 
   useEffect(() => {
@@ -19,7 +13,7 @@ function App() {
       .then((data) => {
         const PokemonInfo: Pokemon = {
           name: data.name,
-          Id: data.Id,
+          Id: data.id,
           weight: data.weight,
           height: data.height,
           types: data.types.map((type) => type.type.name),
@@ -33,13 +27,7 @@ function App() {
 
   return (
     <>
-      <h1>Name: {pokemonInfo && pokemonInfo.name}</h1>
-      <h1>PokeDex ID: {pokemonInfo && pokemonInfo.Id}</h1>
-
-      <h1>Weight: {pokemonInfo && pokemonInfo.weight}</h1>
-      <h1>Height: {pokemonInfo && pokemonInfo.height}</h1>
-
-      <ul>{pokemonInfo && pokemonInfo.types.map((type) => <li>{type}</li>)}</ul>
+      <PokemonCard pokemonInfo={pokemonInfo} />
     </>
   );
 }
