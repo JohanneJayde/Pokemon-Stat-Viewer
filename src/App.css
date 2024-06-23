@@ -8,3 +8,10 @@
   border-radius: 12%;
   border: 1px solid black;
 }
+
+.pokemon--container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+}
