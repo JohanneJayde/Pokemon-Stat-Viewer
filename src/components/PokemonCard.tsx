@@ -24,21 +24,29 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) => {
           types: data.types.map((type) => type.type.name),
         };
 
-        console.log(PokemonInfo);
-
         setPokemonInfo(PokemonInfo);
       });
   }, []);
 
   return (
     <div className="pokemon--card">
-      <h3>Name: {pokemonInfo && pokemonInfo.name}</h3>
-      <span>PokeDex ID: {pokemonInfo && pokemonInfo.Id}</span>
+      <div className="pokemon--card--content">
+        <div className="pokemon--card--header">
+          <h4>{pokemonInfo && pokemonInfo.name}</h4>
+          <span>PokeDex: #{pokemonInfo && pokemonInfo.Id}</span>
+        </div>
 
-      <span>Weight: {pokemonInfo && pokemonInfo.weight}</span>
-      <span>Height: {pokemonInfo && pokemonInfo.height}</span>
-
-      <ul>{pokemonInfo && pokemonInfo.types.map((type) => <li>{type}</li>)}</ul>
+        <div className="pokemon--card--details">
+          <span>Weight: {pokemonInfo && pokemonInfo.weight}</span>
+          <span>Height: {pokemonInfo && pokemonInfo.height}</span>
+        </div>
+        <div className="pokemon--card-types">
+          <span>Types</span>
+          <ul>
+            {pokemonInfo && pokemonInfo.types.map((type) => <li>{type}</li>)}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
