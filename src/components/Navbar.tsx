@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface Props {
   onSearch: (e: string) => void;
   items: string[];

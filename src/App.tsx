@@ -10,13 +10,19 @@ function App() {
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
   const [selectedType, setSelectType] = useState<string>("All");
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+
   useEffect(() => {
-    Axios.get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
+    Axios.get(
+      `https://pokeapi.co/api/v2/pokemon?limit=32&offset=${pageNumber * 40}`
+    )
       .then((res) => res.data)
       .then((data) => {
-        const pokemonNames = data.results.map((pokemon) => pokemon.name);
+        const pokemonNames = data.results.map(
+          (pokemon: { name: string; url: string }) => pokemon.name
+        );
 
-        const pokemon = pokemonNames.map((pokemonName) => {
+        const pokemon = pokemonNames.map((pokemonName: string) => {
           return Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
             .then((response) => response.data)
             .then((data) => {
@@ -25,7 +31,12 @@ function App() {
                 Id: data.id,
                 weight: data.weight,
                 height: data.height,
-                types: data.types.map((type) => type.type.name),
+                types: data.types.map(
+                  (type: {
+                    type: { name: string; url: string };
+                    url: string;
+                  }) => type.type.name
+                ),
               };
             });
         });
@@ -33,13 +44,15 @@ function App() {
           setPokemon(pokemon);
         });
       });
-  }, []);
+  }, [pageNumber]);
 
   useEffect(() => {
     Axios.get("https://pokeapi.co/api/v2/type")
       .then((res) => res.data)
       .then((data) => {
-        setPokemonTypes(data.results.map((type) => type.name));
+        setPokemonTypes(
+          data.results.map((type: { name: string; url: string }) => type.name)
+        );
       });
   }, []);
 
@@ -66,10 +79,17 @@ function App() {
         items={pokemonTypes}
         onSelectType={setSelectType}
       />
+
       <div className="pokemon--container">
         {filter(pokemon).map((pokemon) => (
           <PokemonCard pokemonInfo={pokemon} />
         ))}
+      </div>
+      <div className="pagination">
+        <button onClick={() => setPageNumber(pageNumber - 1)}>
+          Previous Page
+        </button>
+        <button onClick={() => setPageNumber(pageNumber + 1)}>Next Page</button>
       </div>
     </>
   );

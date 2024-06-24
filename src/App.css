@@ -20,7 +20,7 @@ body {
 }
 
 .pokemon--card {
-  width: 300px;
+  width: 250px;
   border-radius: 12%;
   border: 1px solid black;
 }
