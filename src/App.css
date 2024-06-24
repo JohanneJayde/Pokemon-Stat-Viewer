@@ -47,8 +47,13 @@ body {
   font-size: 12px;
 }
 
-.pokemon--card-types {
-  font-size: 12px;
+.pokemon--card--types--title {
+  display: flex;
+  flex-direction: row;
+}
+
+.pokemon--card--types--title > span {
+  margin-right: auto;
 }
 
 .navbar--container {
@@ -64,7 +69,7 @@ body {
   margin-right: auto;
 }
 
-.navbar--container--search {
+.navbar--search {
   display: flex;
   gap: 0.5em;
 }

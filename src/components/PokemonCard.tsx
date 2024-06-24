@@ -1,32 +1,8 @@
-import { useEffect, useState } from "react";
-import Axios from "axios";
+import { useState } from "react";
+import Pokemon from "../interfaces";
 
-interface Pokemon {
-  name: string;
-  Id: number;
-  weight: number;
-  height: number;
-  types: string[];
-}
-
-const PokemonCard = ({ pokemonName }: { pokemonName: string }) => {
-  const [pokemonInfo, setPokemonInfo] = useState<Pokemon | null>(null);
-
-  useEffect(() => {
-    Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-      .then((response) => response.data)
-      .then((data) => {
-        const PokemonInfo: Pokemon = {
-          name: data.name,
-          Id: data.id,
-          weight: data.weight,
-          height: data.height,
-          types: data.types.map((type) => type.type.name),
-        };
-
-        setPokemonInfo(PokemonInfo);
-      });
-  }, []);
+const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
+  const [typeVisibilty, setTypeVisibilty] = useState<boolean>(false);
 
   return (
     <div className="pokemon--card">
@@ -40,11 +16,19 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) => {
           <span>Weight: {pokemonInfo && pokemonInfo.weight}</span>
           <span>Height: {pokemonInfo && pokemonInfo.height}</span>
         </div>
-        <div className="pokemon--card-types">
-          <span>Types</span>
-          <ul>
-            {pokemonInfo && pokemonInfo.types.map((type) => <li>{type}</li>)}
-          </ul>
+        <div className="pokemon--card--types">
+          <div className="pokemon--card--types--title">
+            <span>Types</span>
+            <button onClick={() => setTypeVisibilty(!typeVisibilty)}>+</button>
+          </div>
+          <div className="pokemon--card--types--list">
+            {typeVisibilty && (
+              <ul>
+                {pokemonInfo &&
+                  pokemonInfo.types.map((type, i) => <li key={i}>{type}</li>)}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
