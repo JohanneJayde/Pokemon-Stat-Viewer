@@ -7,6 +7,7 @@ import {
   AppBar,
   Box,
   Button,
+  ButtonGroup,
   Container,
   Grid,
   MenuItem,
@@ -102,31 +103,33 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Pokemon Stats Viewer
           </Typography>
-
           <Button
             variant="contained"
             onClick={() => setPageNumber(pageNumber - 1)}
           >
             Previous Page
           </Button>
-
           <Button
             variant="contained"
             onClick={() => setPageNumber(pageNumber + 1)}
           >
             Next Page
           </Button>
-
+          <Box marginX={3} />
           <TextField
-            style={{ background: "white" }}
             variant="outlined"
             label="Search Pokemon"
             value={searchTerm}
+            inputProps={{
+              sx: { borderRadius: 3, background: "background" },
+            }}
             onChange={handleSearchTerm}
           />
           <Box marginX={3} />
           <Select
-            style={{ background: "white" }}
+            inputProps={{
+              sx: { borderRadius: 3, background: "background" },
+            }}
             value={selectedType}
             onChange={handleSelectChange}
           >
@@ -139,7 +142,19 @@ function App() {
           </Select>
         </Toolbar>
       </AppBar>
-
+      <Box margin={3} justifyContent={"center"}>
+        <ButtonGroup>
+          <Button>Generation 1</Button>
+          <Button>Generation 2</Button>
+          <Button>Generation 3</Button>
+          <Button>Generation 4</Button>
+          <Button>Generation 5</Button>
+          <Button>Generation 6</Button>
+          <Button>Generation 7</Button>
+          <Button>Generation 8</Button>
+          <Button>Generation 9</Button>
+        </ButtonGroup>
+      </Box>
       <Box margin={3}>
         <Container maxWidth="lg">
           <Grid container spacing={2} justifyContent="center">

@@ -48,7 +48,7 @@ const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
               {typeVisibilty &&
                 pokemonInfo &&
                 pokemonInfo.types.map((type, i) => (
-                  <ListItem key={i}>{type}</ListItem>
+                  <ListItem key={i}>{type.toUpperCase()}</ListItem>
                 ))}
             </List>
           </Stack>
