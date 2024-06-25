@@ -92,7 +92,7 @@ function App() {
         items={pokemonTypes}
         onSelectType={setSelectType}
       />
-      <Container>
+      <Container maxWidth="md">
         <Grid container spacing={2} justifyContent="center">
           {filter(pokemon).map((pokemon) => (
             <Grid item key={pokemon.Id} xs={12} sm={6} md={3} lg={3}>
