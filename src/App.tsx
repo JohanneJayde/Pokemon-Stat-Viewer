@@ -4,6 +4,19 @@ import Axios from "axios";
 import PokemonCard from "./components/PokemonCard";
 import Navbar from "./components/Navbar";
 import Pokemon from "./interfaces";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  colors,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { Title } from "@mui/icons-material";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -79,12 +92,15 @@ function App() {
         items={pokemonTypes}
         onSelectType={setSelectType}
       />
-
-      <div className="pokemon--container">
-        {filter(pokemon).map((pokemon) => (
-          <PokemonCard pokemonInfo={pokemon} />
-        ))}
-      </div>
+      <Container>
+        <Grid container spacing={2} justifyContent="center">
+          {filter(pokemon).map((pokemon) => (
+            <Grid item key={pokemon.Id} xs={12} sm={6} md={3} lg={3}>
+              <PokemonCard pokemonInfo={pokemon} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
       <div className="pagination">
         <button onClick={() => setPageNumber(pageNumber - 1)}>
           Previous Page

@@ -10,52 +10,6 @@ body {
   margin: 0;
 }
 
-.pokemon--container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1em;
-  align-items: center;
-  justify-content: center;
-}
-
-.pokemon--card {
-  width: 250px;
-  border-radius: 12%;
-  border: 1px solid black;
-}
-
-.pokemon--card--content {
-  padding: 1em;
-}
-
-.pokemon--card--header {
-  margin-bottom: 20px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid black;
-}
-
-.pokemon--card--header > h4 {
-  text-transform: capitalize;
-  margin: 5px 0;
-}
-
-.pokemon--card--details {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  font-size: 12px;
-}
-
-.pokemon--card--types--title {
-  display: flex;
-  flex-direction: row;
-}
-
-.pokemon--card--types--title > span {
-  margin-right: auto;
-}
-
 .navbar--container {
   display: flex;
   flex-direction: row;
