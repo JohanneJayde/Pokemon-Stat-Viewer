@@ -24,13 +24,6 @@ const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
             background: blue[500],
             fontSize: 20,
             textTransform: "capitalize",
-            height: 20,
-          }}
-          titleTypographyProps={{
-            style: { fontSize: "14px", margin: 0 },
-          }}
-          subheaderTypographyProps={{
-            style: { fontSize: "12px" },
           }}
           title={pokemonInfo && pokemonInfo.name}
           subheader={`PokeDex #: ${pokemonInfo && pokemonInfo.Id}`}
@@ -38,17 +31,17 @@ const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
         />
         <CardContent>
           <Stack spacing={1}>
-            <Typography sx={{ fontSize: "12px" }}>
-              Weight: {pokemonInfo && pokemonInfo.weight}
-            </Typography>
-            <Typography sx={{ fontSize: "12px" }}>
-              Height: {pokemonInfo && pokemonInfo.height}
-            </Typography>
+            <Typography>Weight: {pokemonInfo && pokemonInfo.weight}</Typography>
+            <Typography>Height: {pokemonInfo && pokemonInfo.height}</Typography>
           </Stack>
         </CardContent>
         <CardActions>
           <Stack>
-            <Button onClick={() => setTypeVisibilty(!typeVisibilty)}>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setTypeVisibilty(!typeVisibilty)}
+            >
               Show Type
             </Button>
             <List>

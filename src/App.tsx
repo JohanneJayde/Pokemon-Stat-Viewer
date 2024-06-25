@@ -1,22 +1,20 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import "./App.css";
 import Axios from "axios";
 import PokemonCard from "./components/PokemonCard";
-import Navbar from "./components/Navbar";
 import Pokemon from "./interfaces";
 import {
+  AppBar,
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  colors,
   Container,
   Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Toolbar,
   Typography,
 } from "@mui/material";
-import { Title } from "@mui/icons-material";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -69,6 +67,18 @@ function App() {
       });
   }, []);
 
+  const handleSelectChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSelectType(event.target.value);
+  };
+
+  const handleSearchTerm = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSearchTerm(event.target.value);
+  };
+
   function filter(pokemon: Pokemon[]) {
     let filteredPokmeon: Pokemon[] = [];
 
@@ -87,26 +97,80 @@ function App() {
 
   return (
     <>
-      <Navbar
-        onSearch={setSearchTerm}
-        items={pokemonTypes}
-        onSelectType={setSelectType}
-      />
-      <Container maxWidth="md">
-        <Grid container spacing={2} justifyContent="center">
-          {filter(pokemon).map((pokemon) => (
-            <Grid item key={pokemon.Id} xs={12} sm={6} md={3} lg={3}>
-              <PokemonCard pokemonInfo={pokemon} />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Pokemon Stats Viewer
+          </Typography>
+
+          <Button
+            variant="contained"
+            onClick={() => setPageNumber(pageNumber - 1)}
+          >
+            Previous Page
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => setPageNumber(pageNumber + 1)}
+          >
+            Next Page
+          </Button>
+
+          <TextField
+            style={{ background: "white" }}
+            variant="outlined"
+            label="Search Pokemon"
+            value={searchTerm}
+            onChange={handleSearchTerm}
+          />
+          <Box marginX={3} />
+          <Select
+            style={{ background: "white" }}
+            value={selectedType}
+            onChange={handleSelectChange}
+          >
+            <MenuItem defaultValue="All" value="All">
+              All
+            </MenuItem>
+            {pokemonTypes.map((item: string) => (
+              <MenuItem value={item}>{item}</MenuItem>
+            ))}
+          </Select>
+        </Toolbar>
+      </AppBar>
+
+      <Box margin={3}>
+        <Container maxWidth="lg">
+          <Grid container spacing={2} justifyContent="center">
+            {filter(pokemon).map((pokemon) => (
+              <Grid item key={pokemon.Id} xs={12} sm={6} md={3} lg={3}>
+                <PokemonCard pokemonInfo={pokemon} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+        <Box marginY={3}>
+          <Grid container spacing={2} justifyContent={"center"}>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={() => setPageNumber(pageNumber - 1)}
+              >
+                Previous Page
+              </Button>
             </Grid>
-          ))}
-        </Grid>
-      </Container>
-      <div className="pagination">
-        <button onClick={() => setPageNumber(pageNumber - 1)}>
-          Previous Page
-        </button>
-        <button onClick={() => setPageNumber(pageNumber + 1)}>Next Page</button>
-      </div>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={() => setPageNumber(pageNumber + 1)}
+              >
+                Next Page
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
     </>
   );
 }
