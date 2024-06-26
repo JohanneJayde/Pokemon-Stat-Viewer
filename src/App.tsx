@@ -6,27 +6,46 @@ import Pokemon from "./interfaces";
 import {
   AppBar,
   Box,
-  Button,
-  ButtonGroup,
   Container,
   Grid,
+  LinearProgress,
   MenuItem,
   Select,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Toolbar,
   Typography,
 } from "@mui/material";
 
 function App() {
+  const generationIndex = [
+    [151, 0],
+    [251 - 151, 151],
+    [386 - 251, 251],
+    [493 - 386, 386],
+    [648 - 493, 494],
+    [720 - 648, 649],
+    [808 - 720, 721],
+    [904 - 808, 809],
+    [1024, 905],
+  ];
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [pokemon, setPokemon] = useState<Pokemon[]>([]);
   const [selectedType, setSelectType] = useState<string>("All");
   const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
-  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [generation, setGeneration] = useState<number>(1);
+  const [generationDex, setGenerationDex] = useState<number[]>(
+    generationIndex[generation - 1]
+  );
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsLoading(true);
     Axios.get(
-      `https://pokeapi.co/api/v2/pokemon?limit=32&offset=${pageNumber * 40}`
+      `https://pokeapi.co/api/v2/pokemon?limit=${generationDex[0]}&offset=${generationDex[1]}`
     )
       .then((res) => res.data)
       .then((data) => {
@@ -54,9 +73,10 @@ function App() {
         });
         Promise.all(pokemon).then((pokemon) => {
           setPokemon(pokemon);
+          setIsLoading(false);
         });
       });
-  }, [pageNumber]);
+  }, [generationDex]);
 
   useEffect(() => {
     Axios.get("https://pokeapi.co/api/v2/type")
@@ -78,6 +98,16 @@ function App() {
     target: { value: SetStateAction<string> };
   }) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleGeneration = (
+    _event: React.MouseEvent<HTMLElement>,
+    generation: number
+  ) => {
+    if (generation) {
+      setGeneration(generation);
+      setGenerationDex(generationIndex[generation - 1]);
+    }
   };
 
   function filter(pokemon: Pokemon[]) {
@@ -103,18 +133,7 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Pokemon Stats Viewer
           </Typography>
-          <Button
-            variant="contained"
-            onClick={() => setPageNumber(pageNumber - 1)}
-          >
-            Previous Page
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => setPageNumber(pageNumber + 1)}
-          >
-            Next Page
-          </Button>
+
           <Box marginX={3} />
           <TextField
             variant="outlined"
@@ -142,20 +161,36 @@ function App() {
           </Select>
         </Toolbar>
       </AppBar>
-      <Box margin={3} justifyContent={"center"}>
-        <ButtonGroup>
-          <Button>Generation 1</Button>
-          <Button>Generation 2</Button>
-          <Button>Generation 3</Button>
-          <Button>Generation 4</Button>
-          <Button>Generation 5</Button>
-          <Button>Generation 6</Button>
-          <Button>Generation 7</Button>
-          <Button>Generation 8</Button>
-          <Button>Generation 9</Button>
-        </ButtonGroup>
-      </Box>
-      <Box margin={3}>
+      <Container
+        sx={{
+          marginX: "auto",
+          marginY: 3,
+        }}
+      >
+        <ToggleButtonGroup
+          value={generation}
+          onChange={handleGeneration}
+          exclusive
+          color="primary"
+        >
+          <ToggleButton value={1}>Gen 1</ToggleButton>
+          <ToggleButton value={2}>Gen 2</ToggleButton>
+          <ToggleButton value={3}>Gen 3</ToggleButton>
+          <ToggleButton value={4}>Gen 4</ToggleButton>
+          <ToggleButton value={5}>Gen 5</ToggleButton>
+          <ToggleButton value={6}>Gen 6</ToggleButton>
+          <ToggleButton value={7}>Gen 7</ToggleButton>
+          <ToggleButton value={8}>Gen 8</ToggleButton>
+          <ToggleButton value={9}>Gen 9</ToggleButton>
+        </ToggleButtonGroup>
+      </Container>
+      <Container sx={{ width: "100%" }}>
+        <LinearProgress
+          variant="indeterminate"
+          sx={{ display: isLoading ? "block" : "none" }}
+        />
+      </Container>
+      <Box margin={3} sx={{ display: !isLoading ? "block" : "none" }}>
         <Container maxWidth="lg">
           <Grid container spacing={2} justifyContent="center">
             {filter(pokemon).map((pokemon) => (
@@ -165,26 +200,6 @@ function App() {
             ))}
           </Grid>
         </Container>
-        <Box marginY={3}>
-          <Grid container spacing={2} justifyContent={"center"}>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={() => setPageNumber(pageNumber - 1)}
-              >
-                Previous Page
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={() => setPageNumber(pageNumber + 1)}
-              >
-                Next Page
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
       </Box>
     </>
   );
