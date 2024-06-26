@@ -68,10 +68,25 @@ function App() {
                     url: string;
                   }) => type.type.name
                 ),
+                stats: data.stats.map(
+                  (stat: {
+                    base_stat: number;
+                    effort: number;
+                    stat: { name: string; url: string };
+                  }) => {
+                    return {
+                      name: stat.stat.name,
+                      base_stat: stat.base_stat,
+                      effort: stat.effort,
+                    };
+                  }
+                ),
               };
             });
         });
         Promise.all(pokemon).then((pokemon) => {
+          console.log(pokemon);
+
           setPokemon(pokemon);
           setIsLoading(false);
         });

@@ -15,6 +15,7 @@ import { blue } from "@mui/material/colors";
 
 const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
   const [typeVisibilty, setTypeVisibilty] = useState<boolean>(false);
+  const [statsVisibilty, setStatsVisibilty] = useState<boolean>(false);
 
   return (
     <>
@@ -38,12 +39,12 @@ const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
         <CardActions>
           <Stack>
             <Button
-              size="small"
               variant="outlined"
               onClick={() => setTypeVisibilty(!typeVisibilty)}
             >
               Show Type
             </Button>
+
             <List>
               {typeVisibilty &&
                 pokemonInfo &&
@@ -51,6 +52,23 @@ const PokemonCard = ({ pokemonInfo }: { pokemonInfo: Pokemon }) => {
                   <ListItem key={i}>{type.toUpperCase()}</ListItem>
                 ))}
             </List>
+
+            <Button
+              variant="outlined"
+              onClick={() => setStatsVisibilty(!statsVisibilty)}
+            >
+              Show Stats
+            </Button>
+
+            {statsVisibilty &&
+              pokemonInfo &&
+              pokemonInfo.stats.map((stat, i) => (
+                <Stack direction="row" spacing={2}>
+                  <ListItem key={i}>{stat.name.toUpperCase()}</ListItem>
+                  <ListItem key={i}>{stat.base_stat}</ListItem>
+                  <ListItem key={i}>{stat.effort}</ListItem>
+                </Stack>
+              ))}
           </Stack>
         </CardActions>
       </Card>
